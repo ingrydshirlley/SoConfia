@@ -1,15 +1,17 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const tileSize = 40;
 const rows = 10;
 const cols = 14;
+
+let tileSize = 40; // variável que será recalculada no resize
 
 let passosComFe = 0;
 let revealedFaithBlocks = new Set();
 
 let modeFe = false;
 
+// Mapa:
 // 0: caminho visível (errado)
 // 1: parede
 // 2: jogador
@@ -32,22 +34,29 @@ const map = [
 let player = { x: 1, y: 1 };
 
 function drawMap() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
             const tile = map[y][x];
+            let fillColor;
+
             if (tile === 1) {
-                ctx.fillStyle = '#8b5e3c'; // parede: marrom deserto
+                fillColor = '#8b5e3c'; // parede: marrom deserto
             } else if (tile === 0) {
-                ctx.fillStyle = '#f5f1da'; // caminho visível: areia clara
+                fillColor = '#f5f1da'; // caminho visível: areia clara
             } else if (tile === 2) {
-                ctx.fillStyle = '#0077be'; // jogador: azul forte (explorador)
+                fillColor = '#0077be'; // jogador: azul forte
             } else if (tile === 3) {
-                ctx.fillStyle = modeFe ? '#f7d88c' : '#f5f1da'; // caminho verdadeiro
+                fillColor = modeFe ? '#f7d88c' : '#f5f1da'; // caminho verdadeiro
             } else if (tile === 4) {
-                ctx.fillStyle = '#d2691e'; // chegada: tenda ou palmeira marrom avermelhado
+                fillColor = '#d2691e'; // chegada
             }
+
+            ctx.fillStyle = fillColor;
             ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
-            ctx.strokeStyle = '#c2b280'; // cor da grade, estilo areia mais clara
+
+            ctx.strokeStyle = '#c2b280'; // cor da grade estilo areia clara
             ctx.lineWidth = 1;
             ctx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
         }
@@ -71,7 +80,7 @@ function movePlayer(dx, dy) {
     if (!canMove(newX, newY)) return;
 
     const key = `${newX},${newY}`;
-    const isChegada = map[newY][newX] === 4; // 👈 checa antes de substituir
+    const isChegada = map[newY][newX] === 4;
 
     if (map[newY][newX] === 3 && modeFe && !revealedFaithBlocks.has(key)) {
         passosComFe++;
@@ -80,35 +89,63 @@ function movePlayer(dx, dy) {
         const scoreEl = document.getElementById('score');
         scoreEl.innerText = `Passos com fé: ${passosComFe}`;
         scoreEl.classList.add('highlight');
-        setTimeout(() => {
-            scoreEl.classList.remove('highlight');
-        }, 500);
+        setTimeout(() => scoreEl.classList.remove('highlight'), 500);
     }
 
+    // Atualiza o mapa: tira jogador do lugar antigo
     map[player.y][player.x] = 0;
     player.x = newX;
     player.y = newY;
     map[player.y][player.x] = 2;
 
     drawMap();
-    document.getElementById('score').innerText = `Passos com fé: ${passosComFe}`;
 
     if (isChegada) {
-        setTimeout(() => {
-            alert(`Parabéns! Você confiou e chegou ao destino com ${passosComFe} passos de fé.`);
-        }, 100);
+        setTimeout(() => alert('Você venceu! Fé que salva. ✨'), 100);
     }
 }
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowUp') movePlayer(0, -1);
-    if (e.key === 'ArrowDown') movePlayer(0, 1);
-    if (e.key === 'ArrowLeft') movePlayer(-1, 0);
-    if (e.key === 'ArrowRight') movePlayer(1, 0);
-    if (e.key.toLowerCase() === 'f') {
-        modeFe = !modeFe;
-        drawMap();
+function toggleFe() {
+    modeFe = !modeFe;
+    drawMap();
+}
+
+function resizeCanvas() {
+    const containerWidth = document.querySelector('.container').clientWidth;
+    canvas.width = containerWidth;
+    canvas.height = containerWidth * (400 / 560);
+    tileSize = canvas.width / cols;
+    drawMap();
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+window.addEventListener('keydown', (e) => {
+    if (e.repeat) return; // evita movimento contínuo segurando tecla
+
+    switch (e.key) {
+        case 'ArrowUp':
+            movePlayer(0, -1);
+            break;
+        case 'ArrowDown':
+            movePlayer(0, 1);
+            break;
+        case 'ArrowLeft':
+            movePlayer(-1, 0);
+            break;
+        case 'ArrowRight':
+            movePlayer(1, 0);
+            break;
+        case 'f':
+        case 'F':
+            toggleFe();
+            break;
     }
 });
 
-drawMap();
+document.getElementById('upBtn').addEventListener('click', () => movePlayer(0, -1));
+document.getElementById('downBtn').addEventListener('click', () => movePlayer(0, 1));
+document.getElementById('leftBtn').addEventListener('click', () => movePlayer(-1, 0));
+document.getElementById('rightBtn').addEventListener('click', () => movePlayer(1, 0));
+document.getElementById('faithBtn').addEventListener('click', toggleFe);

@@ -2,116 +2,29 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Só Confia - Labirinto da Fé</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            padding: 0;
-            margin: 0;
-        }
-
-        h1 {
-            font-family: 'Papyrus', cursive, sans-serif;
-            font-size: 2.5rem;
-            color: #a0522d;
-            text-shadow: 2px 2px 3px #deb887;
-            margin-bottom: 10px;
-        }
-
-        #score {
-            font-size: 1.25rem;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        p {
-            font-size: 1rem;
-            margin-top: 15px;
-            color: #5b4a29;
-        }
-
-
-
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            /* centraliza horizontalmente */
-            align-items: center;
-            /* centraliza verticalmente */
-            flex-direction: column;
-            background-color: #f0e4c3;
-            font-family: 'Courier New', Courier, monospace;
-            color: #5b4a29;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        canvas {
-            width: 100%;
-            /* canvas ocupa toda largura do container */
-            height: auto;
-            /* mantém proporção */
-            border: 4px solid #8b5e3c;
-            border-radius: 8px;
-            box-shadow: 4px 4px 10px rgba(139, 94, 60, 0.7);
-            background: linear-gradient(45deg, #f7d88c, #f5f1da);
-            margin-top: 20px;
-            display: block;
-            /* remove espaço em linha */
-        }
-
-
-        .container {
-            max-width: 600px;
-            /* limita largura para telas grandes */
-            width: 90vw;
-            /* ocupa 90% da largura da viewport em telas pequenas */
-            text-align: center;
-            padding: 10px;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                color: #5b4a29;
-                text-shadow: none;
-            }
-
-            50% {
-                transform: scale(1.3);
-                color: #5b4a29;
-                /* verde vivo */
-                text-shadow: 0 0 8px #5b4a29;
-            }
-
-            100% {
-                transform: scale(1);
-                color: #5b4a29;
-                text-shadow: none;
-            }
-        }
-
-        .highlight {
-            animation: pulse 0.5s ease;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
     <div class="container">
         <h1>Só Confia</h1>
         <div id="score">Passos com fé: 0</div>
-        <canvas id="gameCanvas" width="560" height="400"></canvas>
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="controls-mobile">
+            <button id="upBtn">▲</button><br />
+            <button id="leftBtn">◀</button>
+            <button id="downBtn">▼</button>
+            <button id="rightBtn">▶</button>
+            <button id="faithBtn" style="margin-left: 10px;">Fé (F)</button>
+        </div>
+
         <p>Use as setas para mover. Pressione <strong>F</strong> para ativar a fé e revelar o caminho verdadeiro.</p>
     </div>
+
+    <script src="script.js"></script>
 </body>
-
-
-<script src="script.js"></script>
 
 </html>
