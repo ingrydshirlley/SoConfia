@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 const rows = 10;
 const cols = 14;
 
-let tileSize = 40; // variável que será recalculada no resize
+let tileSize = 40; 
 
 let passosComFe = 0;
 let revealedFaithBlocks = new Set();
@@ -92,7 +92,6 @@ function movePlayer(dx, dy) {
         setTimeout(() => scoreEl.classList.remove('highlight'), 500);
     }
 
-    // Atualiza o mapa: tira jogador do lugar antigo
     map[player.y][player.x] = 0;
     player.x = newX;
     player.y = newY;
@@ -122,7 +121,7 @@ window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
 window.addEventListener('keydown', (e) => {
-    if (e.repeat) return; // evita movimento contínuo segurando tecla
+    if (e.repeat) return; 
 
     switch (e.key) {
         case 'ArrowUp':
