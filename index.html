@@ -6,6 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Referência ao CSS externo -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ...existing code... */
+        #controls-mobile {
+            display: block !important;
+        }
+
+        @media (min-width: 601px) and (max-width: 900px) {
+            #controls-mobile {
+                display: flex !important;
+                justify-content: center;
+                margin-top: 18px;
+            }
+            .mobile-controls-row {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+                margin-bottom: 4px;
+            }
+            #controls-mobile button {
+                font-size: 1.6rem;
+                padding: 10px 18px;
+                margin: 2px;
+                border: none;
+                border-radius: 10px;
+                background: linear-gradient(45deg, #deb887, #a0522d);
+                color: #fff;
+                box-shadow: 1px 1px 6px rgba(139, 94, 60, 0.18);
+                cursor: pointer;
+                transition: background 0.2s, transform 0.2s;
+            }
+            #controls-mobile button:active {
+                background: linear-gradient(45deg, #a0522d, #deb887);
+                transform: scale(0.97);
+            }
+        }
+        /* ...existing code... */
+    </style>
 </head>
 <body>
     <div class="logo-wrapper">
@@ -57,5 +94,16 @@
     </div>
     <!-- Referência ao JS externo -->
     <script src="js/script.js"></script>
+    <script>
+        // ...existing code...
+
+        // Tablet controls movement
+        document.getElementById('upBtnTablet').onclick = function() { movePlayer(0, -1); };
+        document.getElementById('downBtnTablet').onclick = function() { movePlayer(0, 1); };
+        document.getElementById('leftBtnTablet').onclick = function() { movePlayer(-1, 0); };
+        document.getElementById('rightBtnTablet').onclick = function() { movePlayer(1, 0); };
+
+        // ...existing code...
+    </script>
 </body>
 </html>
