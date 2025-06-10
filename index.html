@@ -1,31 +1,109 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8" />
-    <title>Só Confia - Labirinto da Fé</title>
-    <link rel="stylesheet" href="style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Só Confia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Referência ao CSS externo -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ...existing code... */
+        #controls-mobile {
+            display: block !important;
+        }
+
+        @media (min-width: 601px) and (max-width: 900px) {
+            #controls-mobile {
+                display: flex !important;
+                justify-content: center;
+                margin-top: 18px;
+            }
+            .mobile-controls-row {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+                margin-bottom: 4px;
+            }
+            #controls-mobile button {
+                font-size: 1.6rem;
+                padding: 10px 18px;
+                margin: 2px;
+                border: none;
+                border-radius: 10px;
+                background: linear-gradient(45deg, #deb887, #a0522d);
+                color: #fff;
+                box-shadow: 1px 1px 6px rgba(139, 94, 60, 0.18);
+                cursor: pointer;
+                transition: background 0.2s, transform 0.2s;
+            }
+            #controls-mobile button:active {
+                background: linear-gradient(45deg, #a0522d, #deb887);
+                transform: scale(0.97);
+            }
+        }
+        /* ...existing code... */
+    </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Só Confia</h1>
-        <div id="score">Passos com fé: 0</div>
-        <canvas id="gameCanvas"></canvas>
-
-        <div id="controls-mobile">
-            <button id="upBtn">▲</button><br />
-            <button id="leftBtn">◀</button>
-            <button id="downBtn">▼</button>
-            <button id="rightBtn">▶</button>
-            <button id="faithBtn" style="margin-left: 10px;">Fé (F)</button>
-        </div>
-
-        <p>Use as setas para mover. Pressione <strong>F</strong> para ativar a fé e revelar o caminho verdadeiro.</p>
+    <div class="logo-wrapper">
+        <img id="logo-top" src="https://forcajovemuniversal.com/wp-content/uploads/2021/02/patch_universitarios-1536x864.png" alt="Logo FJU">
     </div>
+    <h1>Só Confia</h1>
+    <div class="maze-container">
+        <canvas id="maze" width="600" height="428"></canvas>
+        <div id="mensagem">
+            Use as setas para mover. Pressione <b>F</b> para ativar a fé e revelar o caminho verdadeiro.
+        </div>
+        <div class="maze-btn-group">
+            <button id="btn-restart" class="maze-btn">Novo Labirinto</button>
+            <button id="btn-reset" class="maze-btn">Reiniciar Jogo</button>
+            <button id="faithBtn" class="maze-btn">Fé (F)</button>
+            <button id="btn-help" class="maze-btn">Help</button>
+        </div>
+        <div id="passos-fe" class="passos-fe"></div>
+        <div id="controls-mobile">
+            <div class="mobile-controls-row">
+                <button id="upBtn">▲</button>
+            </div>
+            <div class="mobile-controls-row">
+                <button id="leftBtn">◀</button>
+                <button id="downBtn">▼</button>
+                <button id="rightBtn">▶</button>
+            </div>
+        </div>
+    </div>
+    <!-- Pop-up de ajuda -->
+    <div id="help-popup" class="help-popup" style="display:none;">
+        <div class="help-content">
+            <span class="help-close" id="help-close">&times;</span>
+            <h2>Como Jogar</h2>
+            <p>
+                O objetivo do jogo é conduzir o personagem pelo labirinto até o destino final (quadrado verde), usando as setas do teclado para se mover.<br><br>
+                Se ficar perdido, pressione a tecla <b>F</b> ou o botão <b>Fé</b> para ativar a "fé" e revelar o caminho correto até o destino.<br>
+                Ao seguir o caminho de fé, você verá quantos passos de fé já realizou.<br><br>
+                Você pode gerar um novo labirinto a qualquer momento clicando no botão <b>Novo Labirinto</b>.
+            </p>
+        </div>
+    </div>
+    <!-- Pop-up de vitória -->
+    <div id="victory-popup" style="display:none;">
+        <div class="victory-content">
+            <span class="victory-close" id="victory-close">&times;</span>
+            <p>Você venceu! Fé que salva. ✨</p>
+        </div>
+    </div>
+    <!-- Referência ao JS externo -->
+    <script src="js/script.js"></script>
+    <script>
+        // ...existing code...
 
-    <script src="script.js"></script>
+        // Tablet controls movement
+        document.getElementById('upBtnTablet').onclick = function() { movePlayer(0, -1); };
+        document.getElementById('downBtnTablet').onclick = function() { movePlayer(0, 1); };
+        document.getElementById('leftBtnTablet').onclick = function() { movePlayer(-1, 0); };
+        document.getElementById('rightBtnTablet').onclick = function() { movePlayer(1, 0); };
+
+        // ...existing code...
+    </script>
 </body>
-
 </html>
